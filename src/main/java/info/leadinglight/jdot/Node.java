@@ -2,6 +2,7 @@ package info.leadinglight.jdot;
 
 import info.leadinglight.jdot.enums.*;
 import info.leadinglight.jdot.impl.*;
+import info.leadinglight.jdot.table.RecordTable;
 
 public class Node extends AbstractElement {
 
@@ -172,6 +173,14 @@ public class Node extends AbstractElement {
     }
 
     public Node setLabel(String label) {
+        getAttrs().set(Attrs.Key.label, label);
+        return this;
+    }
+
+    public Node setLabel(RecordTable label) {
+        if (getAttrs().get(Attrs.Key.shape) == null || !getAttrs().get(Attrs.Key.shape).toString().equals("record")) {
+            throw new RuntimeException("HtmlTable is available only on records");
+        }
         getAttrs().set(Attrs.Key.label, label);
         return this;
     }

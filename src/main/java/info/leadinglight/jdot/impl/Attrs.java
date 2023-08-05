@@ -1,5 +1,7 @@
 package info.leadinglight.jdot.impl;
 
+import info.leadinglight.jdot.table.RecordTable;
+import info.leadinglight.jdot.table.TableCell;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -50,6 +52,8 @@ public class Attrs {
             str = str + key.name() + "=";
             if (value instanceof String) {
                 str = str + "\"" + (String) value + "\"";
+            } else if (value instanceof RecordTable) {
+                str = str + ((RecordTable) value).toLabel();
             } else {
                 str = str + value;
             }

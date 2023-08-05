@@ -80,29 +80,31 @@ public class Graph extends AbstractGraph {
 
     @Override
     public String toDot() {
-        String dot = "";
+        StringBuilder dot = new StringBuilder();
 
         if (isStrict()) {
-            dot = "strict ";
+            dot = new StringBuilder("strict ");
         }
 
-        dot = dot + _type.name();
+        dot.append(_type.name());
 
         if (getName() != null && getName().length() > 0) {
-            dot = dot + " " + getName();
+            dot.append(" ").append(getName());
         }
 
-        dot = dot + " { ";
+        dot.append(" { ");
 
         if (getAttrs().has()) {
-            dot = dot + "graph [" + getAttrs().getAsString() + "] ";
+            dot.append("graph [").append(getAttrs().getAsString()).append("] ");
+            dot.append("\n");
         }
 
         for (AbstractElement e : getElements()) {
-            dot = dot + e.toDot();
+            dot.append(e.toDot());
+            dot.append("\n");
         }
-        dot = dot + "} ";
-        return dot;
+        dot.append("} ");
+        return dot.toString();
     }
 
     private GraphType _type;
@@ -144,7 +146,7 @@ public class Graph extends AbstractGraph {
 
     public void view(String cmd, String format, String[] browserCmd) {
         String filename = dot2file(cmd, format);
-        Util.sh(Util.append(browserCmd, "file://" + filename));
+        Util.sh(Util.append(browserCmd, filename));
     }
 
     public static String dot2out(String format, String dot) {
@@ -163,8 +165,8 @@ public class Graph extends AbstractGraph {
         DEFAULT_BROWSER_CMD = defaultBrowserCmd;
     }
 
-    public static String DEFAULT_CMD = "/usr/local/bin/dot";
-    public static String[] DEFAULT_BROWSER_CMD = new String[]{"open", "-a", "Google Chrome.app"};
+    public static String DEFAULT_CMD = "/usr/bin/dot";
+    public static String[] DEFAULT_BROWSER_CMD = new String[]{"xdot"};
 
 	// Attrs
     public Graph setDamping(double damping) {
